@@ -3,7 +3,7 @@ def remote = [:]
   remote.name = 'Docker Server'
   remote.host = '3.149.23.119'
   remote.user = 'ubuntu'
-  remote.password = 'Mayclass202412#'
+  remote.password = 'ubuntu'
   remote.allowAnyHosts = true
 
 pipeline {
