@@ -1,7 +1,7 @@
   
 def remote = [:]
   remote.name = 'Docker Server'
-  remote.host = '3.149.23.119'
+  remote.host = '18.191.122.7'
   remote.user = 'ubuntu'
   remote.password = 'ubuntu'
   remote.allowAnyHosts = true
@@ -10,7 +10,7 @@ pipeline {
   agent any
 
   environment {
-       imagename = "austinobioma/may-class"
+       imagename = "mayorpasca32/my1dokarepo"
        registryCredential = 'DOCKERLOGIN'
        dockerImage = ''
        imagetag    = "${env.BUILD_ID}"
