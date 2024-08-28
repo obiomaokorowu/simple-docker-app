@@ -1,16 +1,16 @@
   
 def remote = [:]
   remote.name = 'Docker Server'
-  remote.host = '3.149.23.119'
+  remote.host = '18.191.122.7'
   remote.user = 'ubuntu'
-  remote.password = 'Mayclass202412#'
-  remote.allowAnyHosts = true
+  remote.password = 'ubuntu'
+  remote.allowAnyHosts = false
 
 pipeline {
   agent any
 
   environment {
-       imagename = "austinobioma/may-class"
+       imagename = "mayorpasca32/my1dokarepo"
        registryCredential = 'DOCKERLOGIN'
        dockerImage = ''
        imagetag    = "${env.BUILD_ID}"
@@ -40,7 +40,7 @@ pipeline {
           stage('Deploy To Docker Server Using SSH') {
                steps{
                     script {
-                         sshCommand remote: remote, command: "docker run --name may-docker-class -d -p 9090:80 austinobioma/may-class:9"
+                         sshCommand remote: remote, command: "docker run --name may-docker-class -d -p 9090:80 mayorpasca32/my1dokarepo:9"
                     }
                }
           }
