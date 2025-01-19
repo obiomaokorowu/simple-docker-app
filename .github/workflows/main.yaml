@@ -1,0 +1,51 @@
+name: Docker Deployment
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGENAME: austinobioma/october-batch
+      REGISTRY_CREDENTIAL: ${{ secrets.DOCKERHUB_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      REMOTE_HOST: 18.224.57.240
+      REMOTE_USER: ubuntu
+      REMOTE_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to DockerHub
+        run: echo "${{ env.REGISTRY_PASSWORD }}" | docker login -u "${{ env.REGISTRY_CREDENTIAL }}" --password-stdin
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ env.IMAGENAME }}:${{ github.run_id }} .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ env.IMAGENAME }}:${{ github.run_id }}
+
+      - name: Deploy To Remote Docker Server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ env.REMOTE_HOST }}
+          username: ${{ env.REMOTE_USER }}
+          password: ${{ env.REMOTE_PASSWORD }}
+          script: |
+            docker stop october-batch || true
+            docker rm october-batch || true
+            docker run --name october-batch -d -p 9090:80 ${{ env.IMAGENAME }}:${{ github.run_id }}
+
+      - name: Clean Up Unused Docker Images
+        run: |
+          docker system prune -f
