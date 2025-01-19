@@ -44,7 +44,7 @@ pipeline {
                           """
                              docker stop october-class || true
                              docker rm october-class || true
-                             docker run --name october-class -d -p 8080:80 austinobioma/october-batch:3
+                             docker run --name october-class -d -p 8080:80 austinobioma/october-batch:6
                            """
                     }
                }
