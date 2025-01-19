@@ -1,17 +1,17 @@
   
-def remote = [:]
-  remote.name = 'Docker Server'
-  remote.host = '3.135.214.214'
-  remote.user = 'ubuntu'
-  remote.password = 'Augustclass12#'
-  remote.allowAnyHosts = true
+// def remote = [:]
+//   remote.name = 'Docker Server'
+//   remote.host = '3.135.214.214'
+//   remote.user = 'ubuntu'
+//   remote.password = 'Augustclass12#'
+//   remote.allowAnyHosts = true
 
 pipeline {
   agent any
 
   environment {
-       imagename = "austinobioma/august-class"
-       registryCredential = 'DOCKERHUB-CRED'
+       imagename = "austinobioma/october-batch"
+       registryCredential = 'DOCKERHUB'
        dockerImage = ''
        imagetag    = "${env.BUILD_ID}"
            }
@@ -37,18 +37,18 @@ pipeline {
                }
           }
 
-          stage('Deploy To Docker Server Using SSH') {
-               steps{
-                    script {
-                         sshCommand remote: remote, command:
-                          """
-                             docker stop august-class || true
-                             docker rm august-class || true
-                             docker run --name august-class -d -p 8080:80 austinobioma/august-class:6
-                           """
-                    }
-               }
-          }
+//           stage('Deploy To Docker Server Using SSH') {
+//                steps{
+//                     script {
+//                          sshCommand remote: remote, command:
+//                           """
+//                              docker stop august-class || true
+//                              docker rm august-class || true
+//                              docker run --name august-class -d -p 8080:80 austinobioma/august-class:6
+//                            """
+//                     }
+//                }
+//           }
 
           stage('Remove Unused docker image') {
                steps{
